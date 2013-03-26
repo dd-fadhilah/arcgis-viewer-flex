@@ -7,22 +7,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 -->
 <configuration>
+<!--  commented out title, subtitle, and logo as we're not using
     <title>ArcGIS Viewer for Flex</title>
     <subtitle>a configurable web mapping application</subtitle>
     <logo>assets/images/logo.png</logo>
+    
+    -->
+    <!-- updated colors from  0xFFFFFF,0x333333,0x101010,0x000000,0xFFD700-->
     <style>
-        <colors>0xFFFFFF,0x333333,0x101010,0x000000,0xFFD700</colors>
+        <colors>0x000000,0xDCDCDC,0xEBF4FF,0xDEEBFF,0xFFFFFF</colors>
         <alpha>0.8</alpha>
     </style>
     <!-- replace the following url with your own geometryservice -->
     <geometryservice url="http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer" />
 
     <!-- UI elements -->
+    <!-- take out navigationwidget since we're using custom one in HC widget
     <widget left="10"  top="50"    config="widgets/Navigation/NavigationWidget.xml" url="widgets/Navigation/NavigationWidget.swf"/>
+    -->
+    <!-- still using HeaderController, just modified the existing widget with new design -->
+     <widget left="0"   top="0"     config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf"/>
     <widget right="0" bottom="0"   config="widgets/OverviewMap/OverviewMapWidget.xml" url="widgets/OverviewMap/OverviewMapWidget.swf"/>
-    <widget right="20" top="55"    config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
-    <widget left="0"   top="0"     config="widgets/HeaderController/HeaderControllerWidget.xml" url="widgets/HeaderController/HeaderControllerWidget.swf"/>
+   <!-- update mapswitcher widget from right=20/top=55 -->
 
+    <widget left="-15" top="110"    config="widgets/MapSwitcher/MapSwitcherWidget.xml" url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
+    
     <map wraparound180="true" initialextent="-14083000 3139000 -10879000 5458000" fullextent="-20000000 -20000000 20000000 20000000" top="40" addarcgisbasemaps="true">
         <operationallayers>
             <layer label="Demographics" type="tiled" visible="false" alpha="0.5"
@@ -45,7 +54,7 @@
                 icon="assets/images/i_bookmark.png"
                 config="widgets/Bookmark/BookmarkWidget.xml"
                 url="widgets/Bookmark/BookmarkWidget.swf"/>
-        <widget label="Louisville Police" left="590" top="280"
+        <widget label="Louisville Police" left="430" top="90"
                 icon="assets/images/i_police.png"
                 config="widgets/Query/QueryWidget_Louisville_PoliceStations.xml"
                 url="widgets/Query/QueryWidget.swf"/>
@@ -53,15 +62,15 @@
                 icon="assets/images/i_search.png"
                 config="widgets/Search/SearchWidget_Louisville.xml"
                 url="widgets/Search/SearchWidget.swf"/>
-        <widget label="Earthquakes (GeoRSS)" left="410" top="280"
+        <widget label="Earthquakes (GeoRSS)" left="410" top="90"
                 icon="assets/images/i_rss.png"
                 config="widgets/GeoRSS/GeoRSSWidget.xml"
                 url="widgets/GeoRSS/GeoRSSWidget.swf"/>
-        <widget label="Draw" left="60" top="400"
+        <widget label="Draw" left="60" top="90"
                 icon="assets/images/i_draw2.png"
                 config="widgets/Draw/DrawWidget.xml"
                 url="widgets/Draw/DrawWidget.swf"/>
-        <widget label="Print" left="390" top="400"
+        <widget label="Print" left="390" top="60"
                 icon="assets/images/i_print.png"
                 config="widgets/Print/PrintWidget.xml"
                 url="widgets/Print/PrintWidget.swf"/>
