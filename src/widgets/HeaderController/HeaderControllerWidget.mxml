@@ -22,6 +22,8 @@
                    xmlns:viewer="com.esri.viewer.*"
                    xmlns:components="com.esri.viewer.components.*"
                    xmlns:HeaderController="widgets.HeaderController.*"
+                   xmlns:MapSwitcher="widgets.MapSwitcher.*"
+                   xmlns:esri="http://www.esri.com/2008/ags"
                    width="100%"
                    borderSkin="{null}"
                    creationComplete="creationCompleteHandler(event)"
@@ -67,6 +69,7 @@
             {
                 if (configData)
                 {
+                    /* Heather - OLD CODE
                     // if an explicit font size is specified, auto shrinking will not happen
                     bannerTitle.autoShrinking = configData.titleFont.size == 0
                     bannerSubtitle.autoShrinking = configData.subTitleFont.size == 0;
@@ -100,10 +103,13 @@
 
                     AppEvent.addListener(AppEvent.SET_LOGO, setLogoHandler);
                     AppEvent.addListener(AppEvent.SET_TITLES, setTitlesHandler);
+                    */
+                    widgetItemArrCol = getWidgetItems(configData.widgets);
                     AppEvent.addListener(AppEvent.WIDGET_STATE_CHANGED, widgetStateChangedHandler);
                 }
             }
-
+            
+            /*old code - Heather 
             private function setLogoHandler(event:AppEvent):void
             {
                 logoIcon.source = event.data;
@@ -114,6 +120,7 @@
                 bannerTitle.text = event.data.title;
                 bannerSubtitle.text = event.data.subtitle;
             }
+            */
 
             private function widgetConfigLoadedHandler():void
             {
@@ -308,8 +315,10 @@
             private function widgetItemDG_widgetItemMouseOverHandler(event:Event):void
             {
                 var pointGlobal:Point = ItemRenderer(event.target).localToGlobal(new Point(0, 0));
-                var pointLocal:Point = headerGroup.globalToLocal(pointGlobal); // get the local coordinates where the menuItem will be shown
-
+                //old code - Heather - // get the local coordinates where the menuItem will be shown
+              
+           //     var pointLocal:Point = headerGroup.globalToLocal(pointGlobal); // get the local coordinates where the menuItem will be shown
+                var pointLocal:Point = centerContainer.globalToLocal(pointGlobal);
                 xOver = pointLocal.x;
 
                 widgetList.visible = false;
@@ -394,11 +403,13 @@
 
             private function arrangeHeadingsAndWidgets():void
             {
-                updateSubtitleInclusion();
+            //    updateSubtitleInclusion(); //comment out Heather
 
                 const availableHeadingWidth:Number = centerContainer.width - widgetItemDG.measuredWidth - NONSTOP_RESIZE_GAP;
-                const desiredHeadingsWidth:Number = Math.max(bannerTitle.getRequiredWidthToDisplayFullText(availableHeadingWidth),
-                                                             bannerSubtitle.getRequiredWidthToDisplayFullText(availableHeadingWidth));
+                widgetItemDG.percentWidth = 75;
+               // old code - Heather commented
+                /*const desiredHeadingsWidth:Number = Math.max(bannerTitle.getRequiredWidthToDisplayFullText(availableHeadingWidth),
+                          bannerSubtitle.getRequiredWidthToDisplayFullText(availableHeadingWidth));
 
                 if (desiredHeadingsWidth >= availableHeadingWidth)
                 {
@@ -416,6 +427,7 @@
             {
                 bannerSubtitle.visible = bannerSubtitle.text != "" && bannerSubtitle.text != null;
                 bannerSubtitle.includeInLayout = bannerSubtitle.text != "" && bannerSubtitle.text != null;
+                */
             }
         ]]>
     </fx:Script>
@@ -424,32 +436,73 @@
              width="100%" height="85">
         <s:Group id="headerContent"
                  width="100%" height="{headerGroup.height - 45}">
+            <!--original code - RECT - not needed
             <s:Rect width="100%" height="100%"
                     alpha="{getStyle('contentBackgroundAlpha')}">
                 <s:fill>
                     <s:SolidColor color="{getStyle('contentBackgroundColor')}"/>
                 </s:fill>
             </s:Rect>
-
+            -->
+<!-- original code - HGroup- not needed
             <s:HGroup width="100%" height="100%"
                       gap="5"
                       paddingLeft="5"
                       paddingRight="5"
                       verticalAlign="middle">
-                <s:BitmapImage id="logoIcon"
-                               horizontalAlign="left"
-                               maxHeight="{headerContent.height}"
-                               verticalAlign="middle"/>
+            -->
+            <!--actual logo for custom UI-->
+                <s:BitmapImage id="logoImage"
+                               smooth="true"
+                               source="@Embed('/assets/images/custom/CustomEsriLogo.png')"
+                               x="0" 
+                               left="0"/>
+                             
+            <!-- fill for top -->
+               <s:BitmapImage id="myfillmode" 
+                              fillMode="repeat" 
+                              height="42" 
+                              smooth="true"
+                              source="@Embed('/assets/images/custom/toprepeat.png')"
+                              y="0"
+                              left="{logoImage.width}"
+                              right="0"/>
+            
+             <!--Recangle containing the navigation component -->
+                   <s:Rect id="navigationRect" 
+                                height="30" 
+                                radiusX="8" 
+                                rotation="90"  
+                                width="175" 
+                                y="196" 
+                                left="4" >
+                            
+                            <s:stroke>
+                                <s:SolidColorStroke caps="none" 
+                                                    color="#a4aaae" 
+                                                    joints="miter" 
+                                                    miterLimit="4" 
+                                                    weight="1.5"/>
+                            </s:stroke>
+                            <s:fill>
+                                    <s:LinearGradient rotation="90">
+                                         <s:GradientEntry alpha="1.0" color="#C0C0C0" ratio="0"/>
+                                         <s:GradientEntry alpha="1.0" color="#DCDCDC" ratio="1"/>
+                                         </s:LinearGradient>
+                            </s:fill>
+                    </s:Rect> 
+                              
 
                 <s:HGroup id="centerContainer"
                           width="100%"
                           resize="arrangeHeadingsAndWidgets()"
                           verticalAlign="middle">
                     <s:VGroup id="headingGroup"
-                              height="{headerContent.height}"
+                              height="{40}"
                               gap="0"
                               minWidth="100"
                               verticalAlign="middle">
+                        <!--remove not needed - Heather 
                         <components:AutoFontLabel id="bannerTitle"
                                                   maxWidth="{headingWidth}"
                                                   styleName="BannerTitle"
@@ -459,6 +512,7 @@
                                                   maxWidth="{headingWidth}"
                                                   styleName="BannerSubtitle"
                                                   textChanged="arrangeHeadingsAndWidgets()"/>
+                        -->
                     </s:VGroup>
 
                     <HeaderController:WidgetItemDataGroup id="widgetItemDG"
@@ -477,21 +531,33 @@
                     </HeaderController:WidgetItemDataGroup>
                 </s:HGroup>
 
+            <!--This controls where the search box sits .. it is needed to separate the search-->
+            <s:HGroup width="100%" 
+                      height="17%"
+                      gap="5"
+                      paddingLeft="700"
+                      paddingRight="10"
+                      paddingTop="3"
+                      horizontalAlign="center"
+                      verticalAlign="middle">
+                
                 <components:GeocoderComponent id="singleLineSearch"
-                                              width="230" height="28"
-                                              includeInLayout="false"
-                                              visible="false"/>
+                                              width="100%" height="35"
+                                              includeInLayout="true"
+                                              visible="true"/>
 
                 <s:DataGroup id="linkGroup"
                              dataProvider="{linkList}"
                              includeInLayout="false"
                              itemRenderer="widgets.HeaderController.LinkItemRenderer"
                              visible="false"/>
-            </s:HGroup>
+    
+  </s:HGroup>
+
         </s:Group>
 
         <s:VGroup id="menuToolTip"
-                  x="{xOver + 12 - menuToolTipBox.width/2}" y="{headerContent.height}"
+                  x="{xOver + 12 - menuToolTipBox.width/2}" y="{40}"
                   gap="0"
                   horizontalAlign="center"
                   visible="false">
@@ -525,7 +591,8 @@
         </s:VGroup>
 
         <s:BorderContainer id="widgetList"
-                           x="{xOver + 4 - widgetListDG.width/2}" y="{headerContent.height}" width="{widgetListDG.width + 4}" height="{widgetListDG.height + 2}"
+                           x="{xOver + 4 - widgetListDG.width/2}" y="{headerContent.height}" 
+                           width="{widgetListDG.width + 4}" height="{widgetListDG.height + 2}"
                            backgroundColor="{getStyle('contentBackgroundColor')}"
                            borderColor="{getStyle('color')}"
                            borderVisible="true"
@@ -546,10 +613,15 @@
             </HeaderController:WidgetListDataGroup>
         </s:BorderContainer>
 
-        <s:filters>
-            <s:DropShadowFilter alpha="0.5"
-                                blurX="10"
-                                blurY="10"/>
-        </s:filters>
+
+        
+        <esri:Navigation
+          height="{navigationRect.height - 40}"
+          left="{11}"
+          right="{NaN}"
+          bottom="{NaN}"
+          top="{navigationRect.y + 4}"
+          map="{map}"
+          skinClass="widgets.HeaderController.CustomNavigationSkin"/>
     </s:Group>
 </viewer:BaseWidget>
