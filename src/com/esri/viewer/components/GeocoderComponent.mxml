@@ -761,6 +761,8 @@
     <esri:Geocoder id="geocoder"
                    left="0" right="0" top="0" bottom="0"
                    fault="geocoder_faultHandler(event)"
+                   fontSize="14"
+                   color="0x00000" 
                    map="{map}"
                    resultSelected="geocoder_resultSelectedHandler(event)"/>
 </s:Group>
