@@ -22,9 +22,11 @@
 <s:SparkButtonSkin xmlns:fx="http://ns.adobe.com/mxml/2009"
                    xmlns:s="library://ns.adobe.com/flex/spark"
                    xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
-                   alpha.disabled="0.5"
+                   alpha.disabled="0.5">
+                   <!--
                    minHeight="30"
                    minWidth="100">
+    -->
 
     <fx:Metadata>
         <![CDATA[ 
@@ -63,6 +65,7 @@
              */
             override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
             {
+                /* old code - Heather commented out'
                 var cr:Number = getStyle("cornerRadius");
 
                 if (cornerRadius != cr)
@@ -88,10 +91,11 @@
                     hldownstroke2.radiusX = cornerRadius;
                 }
 
+                */
                 super.updateDisplayList(unscaledWidth, unscaledHeight);
             }
 
-            private var cornerRadius:Number = 2;
+            private var cornerRadius:Number = 8; //changed from 2
         ]]>
     </fx:Script>
 
@@ -124,6 +128,7 @@
 
     <!-- layer 2: fill -->
     <!--- @private -->
+    <!-- old
     <s:Rect id="fill"
             left="1" right="1" top="1" bottom="1"
             radiusX="2">
@@ -140,9 +145,11 @@
             </s:LinearGradient>
         </s:fill>
     </s:Rect>
+    -->
 
     <!-- layer 3: fill lowlight -->
     <!--- @private -->
+    <!-- old
     <s:Rect id="lowlight"
             left="1" right="1" top="1" bottom="1"
             radiusX="2">
@@ -160,9 +167,11 @@
             </s:LinearGradient>
         </s:fill>
     </s:Rect>
+    -->
 
     <!-- layer 4: fill highlight -->
     <!--- @private -->
+    <!-- old
     <s:Rect id="highlight"
             left="1" right="1" top="1" bottom="1"
             radiusX="2">
@@ -184,9 +193,11 @@
             </s:LinearGradient>
         </s:fill>
     </s:Rect>
+    -->
 
     <!-- layer 5: highlight stroke (all states except down) -->
     <!--- @private -->
+    <!-- old
     <s:Rect id="highlightStroke"
             left="1" right="1" top="1" bottom="1"
             excludeFrom="down"
@@ -198,9 +209,11 @@
             </s:LinearGradientStroke>
         </s:stroke>
     </s:Rect>
+    -->
 
     <!-- layer 6: highlight stroke (down state only) -->
     <!--- @private -->
+    <!-- old
     <s:Rect id="hldownstroke1"
             left="1" right="1" top="1" bottom="1"
             includeIn="down"
@@ -225,7 +238,10 @@
             </s:LinearGradientStroke>
         </s:stroke>
     </s:Rect>
+    -->
+    
     <!--- @private -->
+    <!--
     <s:Rect id="hldownstroke2"
             left="2" right="2" top="2" bottom="2"
             includeIn="down"
@@ -241,9 +257,11 @@
             </s:LinearGradientStroke>
         </s:stroke>
     </s:Rect>
+    -->
 
     <!-- layer 7: border - put on top of the fill so it doesn't disappear when scale is less than 1 -->
     <!--- @private -->
+    <!--
     <s:Rect id="border"
             width="69" height="20"
             left="0" right="0" top="0" bottom="0"
@@ -259,16 +277,21 @@
             </s:LinearGradientStroke>
         </s:stroke>
     </s:Rect>
+    -->
 
     <!-- layer 8: icon-->
     <s:BitmapImage id="icon"
                    left="10"
                    minWidth="16"
+                   width="25"
+                   horizontalCenter="1"
+                   height="25" 
                    source="assets/images/i_basemap.png"
                    verticalCenter="1"/>
 
     <!-- layer 8: text-->
     <!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
+    <!-- old
     <s:Label id="labelDisplay"
              left="34" right="10" top="2" bottom="2"
              maxDisplayedLines="1"
@@ -276,5 +299,6 @@
              verticalAlign="middle"
              verticalCenter="1">
     </s:Label>
+    -->
 
 </s:SparkButtonSkin>
