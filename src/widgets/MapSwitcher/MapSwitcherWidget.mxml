@@ -265,6 +265,7 @@
 
             private function updateContainerPosition(anchorComponent:UIComponent, container:UIComponent):void
             {
+                /* Old code - commented out to reflect mapswitcher on left-hand side
                 var app:UIComponent = FlexGlobals.topLevelApplication as UIComponent;
 
                 var appRect:Rectangle = app.screen;
@@ -307,6 +308,71 @@
                 {
                     container.y = anchorComponent.height - 1;
                 }
+                */
+                
+                //Heather added
+                                var containerGlobalBottomRightPoint:Point = anchorComponent.localToGlobal(new Point(container.width, container.height));
+                                positionContainerHorizontally(containerGlobalBottomRightPoint.x, anchorComponent, container);
+                                positionContainerVertically(containerGlobalBottomRightPoint.y, anchorComponent, container);
+                            }
+                        
+                        private function positionContainerHorizontally(x:Number, anchorComponent:DisplayObject, container:UIComponent):void
+                        {
+                             //Heather added   
+                                    //Updated this to reflect basemap positioned on left-hand side
+                                    var appWidth:Number = FlexGlobals.topLevelApplication.width;
+                                if (container.id == "basemapsContainer")
+                                    {
+                                            if (x > appWidth)
+                                                {
+                                                        container.x = anchorComponent.x - container.width + anchorComponent.width;
+                                                    }
+                                            else
+                                            {
+                                                    container.x = anchorComponent.x + 55;
+                                                }
+                                        }
+                                else
+                                {
+                                        if (x >appWidth)
+                                            {
+                                                    container.x = anchorComponent.x = container.width + anchorComponent.width;
+                                                }
+                                        else
+                                        {
+                                                container.x = anchorComponent.x + 95;
+                                            }
+                                        
+                                    }
+                            }
+                        
+                        private function positionContainerVertically(y:Number, anchorComponent:DisplayObject, container:UIComponent):void
+                        {
+                                //Updated this to reflect basemap positioned on left-hand side Added +250
+                                    var appHeight:Number = FlexGlobals.topLevelApplication.height;
+                                if (container.id == "basemapsContainer")
+                                    {
+                                            if (y > appHeight)
+                                                {
+                                                        container.y = anchorComponent.y + 1 - container.height + 250;
+                                                    }
+                                            else
+                                            {
+                                                    container.y = anchorComponent.height - 1;
+                                                }
+                                        }
+                                else
+                                {
+                                        if (x >appHeight)
+                                            {
+                                                    container.y = anchorComponent.y = container.width + anchorComponent.width;
+                                                }
+                                        else
+                                        {
+                                                container.y = anchorComponent.y + 9;
+                                            }
+                                        
+                                   }
             }
 
             private function dispatchChangeBasemapEvent():void
@@ -417,16 +483,18 @@
         <s:State name="buttonOptions" stateGroups="normal"/>
     </viewer:states>
 
-    <s:HGroup id="mapLayersContainer" gap="9">
+    <!--changed HGroup to VGroup -->
+    <s:VGroup id="mapLayersContainer" horizontalAlign="center" paddingLeft="-15" gap="9">
         <s:Button id="opLayersButton"
                   height="100%"
                   click="opLayersButton_clickHandler(event)"
                   keyUp="opLayersButton_keyUpHandler(event)"
                   label="{opLayerListButtonLabel}"
-                  maxWidth="265"
+                  maxWidth="362"
                   rollOut="startHideTimer()"
                   rollOver="opLayerListButton_rollOverHandler(event)"
                   tabIndex="1"
+                  skinClass="com.esri.viewer.skins.OpsLayerButtonSkin"
                   visible="false"/>
 
         <s:ButtonBar id="basemapsButtonBar"
@@ -448,7 +516,7 @@
                   rollOver="basemapsButton_rollOverHandler(event)"
                   skinClass="com.esri.viewer.skins.BasemapsButtonSkin"
                   tabIndex="4"/>
-    </s:HGroup>
+    </s:VGroup>
 
     <s:BorderContainer id="opLayersContainer"
                        width="265" height="180"
@@ -485,11 +553,11 @@
                 requireSelection="true"
                 tabIndex="5">
             <s:layout>
-                <s:TileLayout paddingBottom="10"
-                              paddingLeft="10"
-                              paddingRight="10"
-                              paddingTop="10"
-                              requestedColumnCount="{(basemapList.length > 2) ? 3 : 2}"/>
+                <s:TileLayout paddingBottom="7"
+                              paddingLeft="7"
+                              paddingRight="7"
+                              paddingTop="7"
+                              requestedColumnCount="{(basemapList.length > 3) ? 4 : 3}"/>
             </s:layout>
         </s:List>
     </s:BorderContainer>
