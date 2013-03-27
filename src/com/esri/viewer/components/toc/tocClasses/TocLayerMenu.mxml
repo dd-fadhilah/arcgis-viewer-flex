@@ -191,8 +191,10 @@
                 if (!_transparencyMenuItem)
                 {
                     _transparencyMenuItem = new TransparencyMenuItem();
-
-                    _transparencyMenuItem.x = this.x - _transparencyMenuItem.width;
+                    
+                    //Heather updated x and y to reflect right side instead of left (popups) 
+                   //  _transparencyMenuItem.x = this.x - _transparencyMenuItem.width;
+                    _transparencyMenuItem.x = (this.x + _transparencyMenuItem.width) - 54; 
                     _transparencyMenuItem.y = this.y; // allign with the layer option popup
                     _transparencyMenuItem.layer = _layer;
                     PopUpManager.addPopUp(_transparencyMenuItem, this.parent);
