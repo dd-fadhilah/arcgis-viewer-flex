@@ -103,7 +103,7 @@ public class WidgetTemplate extends SkinnableContainer implements IWidgetTemplat
 
     private var _widgetId:Number;
 
-    private var _widgetState:String = WIDGET_OPENED;
+    private var _widgetState:String;
 
     private var _cursorID:int = 0;
 
@@ -492,7 +492,10 @@ public class WidgetTemplate extends SkinnableContainer implements IWidgetTemplat
     }
 
     private function resize_moveHandler(event:MouseEvent):void
-    {
+    {   
+        // clear constraints
+        var widget:UIComponent = parent as UIComponent;
+        widget.left = widget.right = widget.top = widget.bottom = undefined;
         if (isRtl())
         {
             resize_moveHandler_rtl();
@@ -512,8 +515,8 @@ public class WidgetTemplate extends SkinnableContainer implements IWidgetTemplat
         if ((stage.mouseX < stage.width - 20) && (stage.mouseY < stage.height - 20))
         {
             if ((stage.mouseX - parent.x) > minimumResizeWidth)
-            {
-                width = (stage.mouseX - parent.x);
+            {                 
+                width = (stage.mouseX - (stage.stageWidth - parent.parent.width + parent.x));
             }
             if ((stage.mouseY - parent.y) > minimumResizeHeight)
             {
